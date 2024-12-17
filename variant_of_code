@@ -20,7 +20,7 @@ class Base64App:
         self.entry_message = tk.Entry(root, width=50, font=self.button_font, bd=2, relief=tk.SUNKEN)
         self.entry_message.pack(pady=10, padx=10)
 
-        self.button_encode = tk.Button(root, text="Закодировать в Base64", command=self.encode_base64, bg="#4CAF50", fg="white", font=self.button_font, bd=2, relief=tk.RAISED)
+        self.button_encode = tk.Button(root, text="Кодировать в Base64", command=self.encode_base64, bg="#4CAF50", fg="white", font=self.button_font, bd=2, relief=tk.RAISED)
         self.button_encode.pack(pady=5, padx=10)
 
         self.button_decode = tk.Button(root, text="Декодировать из Base64", command=self.decode_base64, bg="#2196F3", fg="white", font=self.button_font, bd=2, relief=tk.RAISED)
