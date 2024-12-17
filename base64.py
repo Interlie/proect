@@ -1,17 +1,15 @@
 import base64
 
 class Base64Converter:
-    """Класс для кодирования и декодирования сообщений в формате Base64."""
+    # Класс для кодирования и декодирования сообщений в формате Base64
 
     def encode(self, message):
-        """Кодирует сообщение в формат Base64.
+        # Кодируем сообщение в формат Base64
 
         Args:
             message: Сообщение для кодирования (строка).
 
         Returns:
-            Закодированное сообщение в виде строки, или None в случае ошибки.
-        """
         try:
             message_bytes = message.encode('utf-8')
             base64_bytes = base64.b64encode(message_bytes)
@@ -23,14 +21,12 @@ class Base64Converter:
 
 
     def decode(self, base64_message):
-        """Декодирует сообщение из формата Base64.
+        # Декодируем сообщение из формата Base64.
 
         Args:
             base64_message: Сообщение в формате Base64 (строка).
 
         Returns:
-            Декодированное сообщение в виде строки, или None в случае ошибки.
-        """
         try:
             base64_bytes = base64_message.encode('utf-8')
             message_bytes = base64.b64decode(base64_bytes)
@@ -41,7 +37,7 @@ class Base64Converter:
             return None
 
 def main():
-    """Основная функция для работы с классом Base64Converter."""
+    # Основная функция для работы с классом Base64Converter
     converter = Base64Converter()
 
     while True:
