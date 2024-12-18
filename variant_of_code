@@ -1,2 +1,122 @@
+import base64
+import tkinter as tk
+from tkinter import messagebox, filedialog
+
+class Base64Converter:
+    # Класс для кодирования и декодирования сообщений в формате Base64
+
+    def encode(self, message):
+        # Кодируем сообщение в формат Base64
+        try:
+            message_bytes = message.encode('utf-8')
+            base64_bytes = base64.b64encode(message_bytes)
+            base64_message = base64_bytes.decode('utf-8')
+            return base64_message
+        except Exception as e:
+            print(f"Ошибка при кодировании: {e}")
+            return None
+
+    def decode(self, base64_message):
+        # Декодируем сообщение из формата Base64
+        try:
+            base64_bytes = base64_message.encode('utf-8')
+            message_bytes = base64.b64decode(base64_bytes)
+            message = message_bytes.decode('utf-8')
+            return message
+        except Exception as e:
+            print(f"Ошибка при декодировании: {e}")
+            return None
+
+class Base64App:
+    # Класс для создания графического интерфейса приложения Base64Converter
+
+    def __init__(self, master):
+        self.master = master
+        self.converter = Base64Converter()  # Создаём экземпляр Base64Converter
+        master.title("Кодирование/Декодирование сообщений в Base64")
+        master.configure(bg="#99CCFF")  # Светлый фон
+
+        # Надпись: "Введите сообщение"
+        self.label = tk.Label(master, text="Введите сообщение:", bg="#99CCFF", fg="#333333", font=("Arial", 16, "bold"), wraplength=400)
+        self.label.grid(row=0, column=0, padx=10, pady=10, columnspan=2)
+
+        # Строка для ввода сообщения
+        self.message_entry = tk.Entry(master, width=50, font=("Arial", 12))
+        self.message_entry.grid(row=1, column=0, padx=10, pady=10, columnspan=2)
+
+        # Кнопки "Кодировать" и "Декодировать"
+        self.encode_button = tk.Button(master, text="Кодировать", command=self.encode_message, bg="#4CAF50", fg="white", font=("Arial", 12), width=20)
+        self.encode_button.grid(row=2, column=0, padx=10, pady=5, sticky="ew")
+
+        self.decode_button = tk.Button(master, text="Декодировать", command=self.decode_message, bg="#2196F3", fg="white", font=("Arial", 12), width=20)
+        self.decode_button.grid(row=2, column=1, padx=10, pady=5, sticky="ew")
+
+        # Кнопки для работы с файлами
+        self.load_button = tk.Button(master, text="Загрузить файл", command=self.load_file, bg="#FFC107", fg="black", font=("Arial", 12), width=20)
+        self.load_button.grid(row=3, column=0, padx=10, pady=5, sticky="ew")
+
+        self.save_button = tk.Button(master, text="Сохранить в файл", command=self.save_file, bg="#FF5722", fg="white", font=("Arial", 12), width=20)
+        self.save_button.grid(row=3, column=1, padx=10, pady=5, sticky="ew")
+
+        # Результат Кодировки/Декодировки
+        self.result_label = tk.Label(master, text="", bg="#99CCFF", fg="#000000", font=("Arial", 14), wraplength=400)
+        self.result_label.grid(row=4, column=0, columnspan=2, padx=10, pady=10)
+
+        # Кнопка выхода
+        self.exit_button = tk.Button(master, text="Закрыть приложение", command=self.exit_app, bg="#F44336", fg="white", font=("Arial", 12), width=42)
+        self.exit_button.grid(row=5, column=0, columnspan=2, padx=10, pady=10)
+
+        # Настройка равных ширин для всех колонок
+        master.grid_columnconfigure(0, weight=1)
+        master.grid_columnconfigure(1, weight=1)
+
+    def load_file(self):
+        # Загрузить текст из файла
+        file_path = filedialog.askopenfilename(title="Выберите файл", filetypes=[("Text files", "*.txt")])
+        if file_path:
+            with open(file_path, 'r', encoding='utf-8') as file:
+                content = file.read()
+                self.message_entry.delete(0, tk.END)
+                self.message_entry.insert(0, content)
+
+    def save_file(self):
+        # Сохранить результат в файл
+        file_path = filedialog.asksaveasfilename(title="Сохранить файл", defaultextension=".txt", filetypes=[("Text files", "*.txt")])
+        if file_path:
+            with open(file_path, 'w', encoding='utf-8') as file:
+                file.write(self.result_label.cget("text"))
+
+    def encode_message(self):
+        """Обработчик нажатия кнопки для кодирования сообщения."""
+        message = self.message_entry.get()
+        encoded_message = self.converter.encode(message)  # Используем экземпляр
+        if encoded_message:
+            self.result_label.config(text=f"Закодированное сообщение: {encoded_message}")
+        else:
+            messagebox.showerror("Ошибка", "Не удалось закодировать сообщение.")
+
+    def decode_message(self):
+        """Обработчик нажатия кнопки для декодирования сообщения."""
+        base64_message = self.message_entry.get()
+        decoded_message = self.converter.decode(base64_message)  # Используем экземпляр
+        if decoded_message:
+            self.result_label.config(text=f"Декодированное сообщение: {decoded_message}")  # Вставляем декодированное сообщение
+        else:
+            messagebox.showerror("Ошибка", "Не удалось декодировать сообщение. Вероятно наличие повреждённых или неполных данных.")
+
+    def exit_app(self):
+        # Выход из приложения
+        self.master.quit()
+
+def main():
+    # Основная функция для запуска приложения
+    root = tk.Tk()
+    root.geometry("600x300")
+    app = Base64App(root)
+    root.mainloop()
+
+if __name__ == "__main__":
+    main()
+
 
 
