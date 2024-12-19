@@ -87,20 +87,20 @@ class Base64App:
                 file.write(self.result_label.cget("text"))
 
     def encode_message(self):
-        """Обработчик нажатия кнопки для кодирования сообщения."""
+        # Обработчик нажатия кнопки для кодирования сообщения
         message = self.message_entry.get()
-        encoded_message = self.converter.encode(message)  # Используем экземпляр
+        encoded_message = self.converter.encode(message)  
         if encoded_message:
             self.result_label.config(text=f"Закодированное сообщение: {encoded_message}")
         else:
             messagebox.showerror("Ошибка", "Не удалось закодировать сообщение.")
 
     def decode_message(self):
-        """Обработчик нажатия кнопки для декодирования сообщения."""
+        # Обработчик нажатия кнопки для декодирования сообщения
         base64_message = self.message_entry.get()
-        decoded_message = self.converter.decode(base64_message)  # Используем экземпляр
+        decoded_message = self.converter.decode(base64_message)  
         if decoded_message:
-            self.result_label.config(text=f"Декодированное сообщение: {decoded_message}")  # Вставляем декодированное сообщение
+            self.result_label.config(text=f"Декодированное сообщение: {decoded_message}")  
         else:
             messagebox.showerror("Ошибка", "Не удалось декодировать сообщение. Вероятно наличие повреждённых или неполных данных.")
 
