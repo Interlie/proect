@@ -1,68 +1,72 @@
-import base64
-
-class Base64Converter:
-    # Класс для кодирования и декодирования сообщений в формате Base64
-
-    def encode(self, message):
-        # Кодируем сообщение в формат Base64
-
-        Args:
-            message: Сообщение для кодирования (строка).
-
-        Returns:
-        try:
-            message_bytes = message.encode('utf-8')
-            base64_bytes = base64.b64encode(message_bytes)
-            base64_message = base64_bytes.decode('utf-8')
-            return base64_message
-        except Exception as e:
-            print(f"Ошибка при кодировании: {e}")
-            return None
+BASE64_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
 
 
-    def decode(self, base64_message):
-        # Декодируем сообщение из формата Base64.
+class Base64Encoder:
+    def __init__(self):
+        self.alphabet = BASE64_ALPHABET
 
-        Args:
-            base64_message: Сообщение в формате Base64 (строка).
+    def encode(self, input_string):
+        """Кодирует строку в base64."""
+        binary_string = ''.join([format(ord(char), '08b') for char in input_string])
 
-        Returns:
-        try:
-            base64_bytes = base64_message.encode('utf-8')
-            message_bytes = base64.b64decode(base64_bytes)
-            message = message_bytes.decode('utf-8')
-            return message
-        except Exception as e:
-            print(f"Ошибка при декодировании: {e}")
-            return None
+        # Добавляем нули, чтобы длина была кратна 6
+        padding_length = (6 - len(binary_string) % 6) % 6
+        binary_string += '0' * padding_length
 
-def main():
-    # Основная функция для работы с классом Base64Converter
-    converter = Base64Converter()
+        # Разбиваем на группы по 6 бит и преобразуем в base64
+        base64_string = ''
+        for i in range(0, len(binary_string), 6):
+            six_bit_group = binary_string[i:i + 6]
+            base64_index = int(six_bit_group, 2)
+            base64_string += self.alphabet[base64_index]
 
-    while True:
-        print("\nМеню:")
-        print("1. Закодировать сообщение в Base64")
-        print("2. Декодировать сообщение из Base64")
-        print("3. Выход")
+        # Добавляем символы '=' для выравнивания
+        padding = '=' * (len(input_string) % 3)
+        return base64_string + padding
 
-        choice = input("Выберите действие: ")
 
-        if choice == "1":
-            message = input("Введите сообщение для кодирования: ")
-            encoded_message = converter.encode(message)
-            if encoded_message:
-                print("Закодированное сообщение:", encoded_message)
-        elif choice == "2":
-            base64_message = input("Введите сообщение для декодирования: ")
-            decoded_message = converter.decode(base64_message)
-            if decoded_message:
-                print("Декодированное сообщение:", decoded_message)
-        elif choice == "3":
-            print("Программа завершена.")
-            break
-        else:
-            print("Некорректный ввод. Пожалуйста, выберите действие из меню.")
+class Base64Decoder:
+    def __init__(self):
+        self.alphabet = BASE64_ALPHABET
 
-if __name__ == "__main__":
-    main()
+    def decode(self, encoded_string):
+        """Декодирует строку из base64."""
+        # Убираем символы '=', используемые для выравнивания
+        padding_length = encoded_string.count('=')
+        encoded_string = encoded_string.rstrip('=')
+
+        # Преобразуем символы base64 в бинарный формат
+        binary_string = ''
+        for char in encoded_string:
+            if char in self.alphabet:
+                base64_index = self.alphabet.index(char)
+                binary_string += format(base64_index, '06b')
+
+        # Убираем добавленные нули
+        if padding_length:
+            binary_string = binary_string[:-padding_length * 2]
+
+        # Преобразуем бинарный формат обратно в текст
+        decoded_string = ''
+        for i in range(0, len(binary_string), 8):
+            byte = binary_string[i:i + 8]
+            decoded_string += chr(int(byte, 2))
+
+        return decoded_string
+
+
+class Base64Utility(Base64Encoder, Base64Decoder):
+    def __init__(self):
+        Base64Encoder.__init__(self)
+        Base64Decoder.__init__(self)
+
+
+# Пример использования
+base64_util = Base64Utility()
+original_message = input()
+encoded_message = base64_util.encode(original_message)
+decoded_message = base64_util.decode(encoded_message)
+
+print(f"Original: {original_message}")
+print(f"Encoded: {encoded_message}")
+print(f"Decoded: {decoded_message}")
