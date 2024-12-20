@@ -21,8 +21,14 @@ class Base64Converter:
         try:
             base64_bytes = base64_message.encode('utf-8')
             message_bytes = base64.b64decode(base64_bytes)
-            message = message_bytes.decode('utf-8')
-            return message
+            try:
+                # Попытка декодировать как UTF-8
+                message = message_bytes.decode('utf-8')
+                return message
+            except UnicodeDecodeError:
+                # Если UTF-8 не удалось, пробуем Windows-1252
+                message = message_bytes.decode('cp1252')
+                return message
         except Exception as e:
             print(f"Ошибка при декодировании: {e}")
             return None
@@ -89,7 +95,7 @@ class Base64App:
     def encode_message(self):
         # Обработчик нажатия кнопки для кодирования сообщения
         message = self.message_entry.get()
-        encoded_message = self.converter.encode(message)  
+        encoded_message = self.converter.encode(message)
         if encoded_message:
             self.result_label.config(text=f"Закодированное сообщение: {encoded_message}")
         else:
@@ -98,9 +104,9 @@ class Base64App:
     def decode_message(self):
         # Обработчик нажатия кнопки для декодирования сообщения
         base64_message = self.message_entry.get()
-        decoded_message = self.converter.decode(base64_message)  
+        decoded_message = self.converter.decode(base64_message)
         if decoded_message:
-            self.result_label.config(text=f"Декодированное сообщение: {decoded_message}")  
+            self.result_label.config(text=f"Декодированное сообщение: {decoded_message}")
         else:
             messagebox.showerror("Ошибка", "Не удалось декодировать сообщение. Вероятно наличие повреждённых или неполных данных.")
 
