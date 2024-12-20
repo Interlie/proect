@@ -27,7 +27,6 @@ class Base64Encoder:
 
         return encoded_string
 
-# Пример использования
 base64_encoded = Base64Encoder()
 
 class Base64Decoder:
@@ -60,7 +59,6 @@ class Base64Decoder:
         return decoded_string
 
 
-# Пример использования
 base64_decoded = Base64Decoder()
 basee64_encoded = Base64Encoder()
 
