@@ -41,6 +41,7 @@ class Base64App:
         self.converter = Base64Converter()
         master.title("Кодирование/Декодирование сообщений в Base64")
         master.configure(bg="#97FFFF")
+        master.iconbitmap("C:/Users/panko/OneDrive/Рабочий стол/УЧЁБА/КУРСЫ/2 КУРС/2 КУРС 1 СЕМЕСТР/ООП/ООП_ЛАБЫ/ООП_ЛАБЫ_6-7/icon_2.ico")
 
         # Надпись: "Введите сообщение"
         self.label = tk.Label(master, text="Введите сообщение:".upper(), bg="#97FFFF", fg="#333333", font=("Arial", 16, "bold"), wraplength=400)
@@ -89,13 +90,20 @@ class Base64App:
         # Сохранить результат в файл
         file_path = filedialog.asksaveasfilename(title="Сохранить файл", defaultextension=".txt", filetypes=[("Text files", "*.txt")])
         if file_path:
-            with open(file_path, 'w', encoding='utf-8') as file:
-                file.write(self.result_label.cget("text"))
+            result_text = self.result_label.cget("text")
+            if "Закодированное сообщение:" in result_text:
+                encoded_message = result_text.split("Закодированное сообщение: ")[1]
+                with open(file_path, 'w', encoding='utf-8') as file:
+                    file.write(encoded_message.strip())  
+            elif "Декодированное сообщение:" in result_text:
+                decoded_message = result_text.split("Декодированное сообщение: ")[1]
+                with open(file_path, 'w', encoding='utf-8') as file:
+                    file.write(decoded_message.strip())  
 
     def encode_message(self):
         # Обработчик нажатия кнопки для кодирования сообщения
         message = self.message_entry.get()
-        encoded_message = self.converter.encode(message)
+        encoded_message = self.converter.encode(message)  #
         if encoded_message:
             self.result_label.config(text=f"Закодированное сообщение: {encoded_message}")
         else:
