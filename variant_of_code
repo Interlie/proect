@@ -43,7 +43,7 @@ class Base64App:
         master.configure(bg="#97FFFF")
 
         # Надпись: "Введите сообщение"
-        self.label = tk.Label(master, text="Введите сообщение:", bg="#97FFFF", fg="#333333", font=("Arial", 16, "bold"), wraplength=400)
+        self.label = tk.Label(master, text="Введите сообщение:".upper(), bg="#97FFFF", fg="#333333", font=("Arial", 16, "bold"), wraplength=400)
         self.label.grid(row=0, column=0, padx=10, pady=10, columnspan=2)
 
         # Строка для ввода сообщения
