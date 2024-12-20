@@ -6,7 +6,7 @@ class Base64Encoder:
         self.alphabet = BASE64_ALPHABET
 
     def encode(self, input_string):
-        """Кодирует строку в base64."""
+        # Кодируем строку в base64
         # Преобразуем строку в бинарный формат
         binary_string = ''.join(format(ord(char), '08b') for char in input_string)
 
@@ -34,7 +34,7 @@ class Base64Decoder:
         self.alphabet = BASE64_ALPHABET
 
     def decode(self, encoded_string):
-        """Декодирует строку из base64."""
+        # Декодируем строку из base64
         # Убираем символы '=', используемые для выравнивания
         padding_length = encoded_string.count('=')
         encoded_string = encoded_string.rstrip('=')
