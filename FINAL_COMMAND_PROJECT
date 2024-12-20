@@ -91,15 +91,13 @@ class Base64App:
         if file_path:
             result_text = self.result_label.cget("text")
             if "Закодированное сообщение:" in result_text:
-                # Извлекаем только закодированное сообщение
                 encoded_message = result_text.split("Закодированное сообщение: ")[1]
                 with open(file_path, 'w', encoding='utf-8') as file:
-                    file.write(encoded_message.strip())  # Записываем закодированное сообщение без лишних пробелов
+                    file.write(encoded_message.strip())  
             elif "Декодированное сообщение:" in result_text:
-                # Извлекаем только декодированное сообщение
                 decoded_message = result_text.split("Декодированное сообщение: ")[1]
                 with open(file_path, 'w', encoding='utf-8') as file:
-                    file.write(decoded_message.strip())  # Записываем декодированное сообщение без лишних пробелов
+                    file.write(decoded_message.strip())  
 
     def encode_message(self):
         # Обработчик нажатия кнопки для кодирования сообщения
