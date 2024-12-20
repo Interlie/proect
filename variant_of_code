@@ -38,12 +38,12 @@ class Base64App:
 
     def __init__(self, master):
         self.master = master
-        self.converter = Base64Converter()  # Создаём экземпляр Base64Converter
+        self.converter = Base64Converter()
         master.title("Кодирование/Декодирование сообщений в Base64")
-        master.configure(bg="#99CCFF")  # Светлый фон
+        master.configure(bg="#97FFFF")
 
         # Надпись: "Введите сообщение"
-        self.label = tk.Label(master, text="Введите сообщение:", bg="#99CCFF", fg="#333333", font=("Arial", 16, "bold"), wraplength=400)
+        self.label = tk.Label(master, text="Введите сообщение:", bg="#97FFFF", fg="#333333", font=("Arial", 16, "bold"), wraplength=400)
         self.label.grid(row=0, column=0, padx=10, pady=10, columnspan=2)
 
         # Строка для ввода сообщения
@@ -58,14 +58,14 @@ class Base64App:
         self.decode_button.grid(row=2, column=1, padx=10, pady=5, sticky="ew")
 
         # Кнопки для работы с файлами
-        self.load_button = tk.Button(master, text="Загрузить файл", command=self.load_file, bg="#FFC107", fg="black", font=("Arial", 12), width=20)
+        self.load_button = tk.Button(master, text="Загрузить файл", command=self.load_file, bg="#FFC107", fg="white", font=("Arial", 12), width=20)
         self.load_button.grid(row=3, column=0, padx=10, pady=5, sticky="ew")
 
-        self.save_button = tk.Button(master, text="Сохранить в файл", command=self.save_file, bg="#FF5722", fg="white", font=("Arial", 12), width=20)
+        self.save_button = tk.Button(master, text="Сохранить в файл", command=self.save_file, bg="#FF7F24", fg="white", font=("Arial", 12), width=20)
         self.save_button.grid(row=3, column=1, padx=10, pady=5, sticky="ew")
 
         # Результат Кодировки/Декодировки
-        self.result_label = tk.Label(master, text="", bg="#99CCFF", fg="#000000", font=("Arial", 14), wraplength=400)
+        self.result_label = tk.Label(master, text="", bg="#97FFFF", fg="#000000", font=("Arial", 14), wraplength=400)
         self.result_label.grid(row=4, column=0, columnspan=2, padx=10, pady=10)
 
         # Кнопка выхода
@@ -123,6 +123,9 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
 
 
 
