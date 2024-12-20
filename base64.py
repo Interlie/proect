@@ -7,23 +7,28 @@ class Base64Encoder:
 
     def encode(self, input_string):
         """Кодирует строку в base64."""
-        binary_string = ''.join([format(ord(char), '08b') for char in input_string])
+        # Преобразуем строку в бинарный формат
+        binary_string = ''.join(format(ord(char), '08b') for char in input_string)
 
-        # Добавляем нули, чтобы длина была кратна 6
-        padding_length = (6 - len(binary_string) % 6) % 6
-        binary_string += '0' * padding_length
+        # Добавляем нули, если длина не кратна 6
+        while len(binary_string) % 6 != 0:
+            binary_string += '0'
 
-        # Разбиваем на группы по 6 бит и преобразуем в base64
-        base64_string = ''
+        # Кодируем бинарный формат в base64
+        encoded_string = ''
         for i in range(0, len(binary_string), 6):
-            six_bit_group = binary_string[i:i + 6]
-            base64_index = int(six_bit_group, 2)
-            base64_string += self.alphabet[base64_index]
+            byte = binary_string[i:i+6]
+            index = int(byte, 2)
+            encoded_string += self.alphabet[index]
 
         # Добавляем символы '=' для выравнивания
-        padding = '=' * (len(input_string) % 3)
-        return base64_string + padding
+        padding_length = (4 - len(encoded_string) % 4) % 4
+        encoded_string += '=' * padding_length
 
+        return encoded_string
+
+# Пример использования
+base64_encoded = Base64Encoder()
 
 class Base64Decoder:
     def __init__(self):
@@ -55,18 +60,36 @@ class Base64Decoder:
         return decoded_string
 
 
-class Base64Utility(Base64Encoder, Base64Decoder):
-    def __init__(self):
-        Base64Encoder.__init__(self)
-        Base64Decoder.__init__(self)
-
-
 # Пример использования
-base64_util = Base64Utility()
-original_message = input()
-encoded_message = base64_util.encode(original_message)
-decoded_message = base64_util.decode(encoded_message)
+base64_decoded = Base64Decoder()
+basee64_encoded = Base64Encoder()
 
-print(f"Original: {original_message}")
-print(f"Encoded: {encoded_message}")
-print(f"Decoded: {decoded_message}")
+
+print ('ввести сообщение - 1, ввести файл -2')
+fd = input()
+if (fd == '1'):
+    print('введите сообщение')
+    input_message = input()
+
+
+elif (fd=='2'):
+    print ('введите путь документа без кавычек')
+    path = input()
+    with open(path, 'r') as file:
+        input_message = file.read()
+
+
+
+
+print('выбирете действие: кодировать -1, декодировать -2')
+f = input()
+if (f == '2'):
+    decoded_message = base64_decoded.decode(input_message)
+    print(f"Input: {input_message}")
+    print(f"Decoded: {decoded_message}")
+
+
+elif (f=='1'):
+    encoded_message = base64_encoded.encode(input_message)
+    print(f"Input: {input_message}")
+    print(f"Encoded: {encoded_message}")
