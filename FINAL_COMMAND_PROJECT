@@ -102,7 +102,7 @@ class Base64App:
     def encode_message(self):
         # Обработчик нажатия кнопки для кодирования сообщения
         message = self.message_entry.get()
-        encoded_message = self.converter.encode(message)  #
+        encoded_message = self.converter.encode(message)  
         if encoded_message:
             self.result_label.config(text=f"Закодированное сообщение: {encoded_message}")
         else:
